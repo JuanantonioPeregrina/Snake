@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("partials/header", {}) -%>
+
+<body>
+  <h1><%= message %></h1>
+  <p>Jugador: <%= player %></p>
+
+  <!-- Canvas para el juego -->
+  <canvas id="game" width="400" height="400"></canvas>
+  
+  <!-- Archivo JavaScript del juego -->
+  <script src="/js/game.js" ></script>
+
+  <%- include("partials/footer", {}) -%>

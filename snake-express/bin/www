@@ -1,0 +1,56 @@
+#!/usr/bin/env node
+
+/**
+ * Importar la aplicación y HTTP
+ */
+const app = require('../app');
+const http = require('http');
+
+/**
+ * Configurar el puerto
+ */
+const PORT = normalizePort(process.env.PORT || '3000');
+app.set('port', PORT);
+
+/**
+ * Crear el servidor HTTP
+ */
+const server = http.createServer(app);
+
+/**
+ * Iniciar el servidor
+ */
+server.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
+server.on('error', onError);
+
+/**
+ * Funciones auxiliares
+ */
+function normalizePort(val) {
+  const port = parseInt(val, 10);
+  if (isNaN(port)) return val; // Pipe
+  if (port >= 0) return port; // Número de puerto válido
+  return false;
+}
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  const bind = typeof PORT === 'string' ? 'Pipe ' + PORT : 'Port ' + PORT;
+  switch (error.code) {
+    case 'EACCES':
+      console.error(`${bind} requiere privilegios elevados`);
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(`${bind} ya está en uso`);
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}

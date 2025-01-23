@@ -9,7 +9,38 @@
   <!-- Canvas para el juego -->
   <canvas id="game" width="400" height="400"></canvas>
   
+  <!-- Tabla de puntajes -->
+  <h2>Puntajes</h2>
+  <table border="1" style="margin-top: 20px; width: 50%; text-align: center;">
+    <thead>
+      <tr>
+        <th>Posición</th>
+        <th>Jugador</th>
+        <th>Puntaje</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Juan</td>
+        <td>150</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Ana</td>
+        <td>120</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Pedro</td>
+        <td>100</td>
+      </tr>
+    </tbody>
+  </table>
+
   <!-- Archivo JavaScript del juego -->
-  <script src="/js/game.js" ></script>
+  <script type="module" src="/js/game.js"></script>
 
   <%- include("partials/footer", {}) -%>
+</body>
+</html>

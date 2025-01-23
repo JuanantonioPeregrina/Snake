@@ -1,3 +1,6 @@
+// Importar la función enviarPuntaje de fetch.js
+import { enviarPuntaje } from './fetch.js'; // Ajusta la ruta si fetch.js está en otra carpeta
+
 var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
 
@@ -23,7 +26,6 @@ function getRandomInt(min, max) {
 
 function loop() {
   requestAnimationFrame(loop);
-
   if (++count < 4) {
     return;
   }
@@ -67,6 +69,10 @@ function loop() {
 
     for (var i = index + 1; i < snake.cells.length; i++) {
       if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+         // Llamar a enviarPuntaje cuando el jugador pierde
+         enviarPuntaje(snake.maxCells - 4); // Puntaje = tamaño de la serpiente menos el inicial
+         
+         // Reiniciar el juego
         snake.x = 160;
         snake.y = 160;
         snake.cells = [];

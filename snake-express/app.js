@@ -7,7 +7,8 @@ const indexRouter = require('./routes/index');
 // Crear una instancia de Express
 const app = express();
 
-
+app.use(express.urlencoded({ extended: true })); // Para manejar datos del formulario
+app.use(express.json()); // Para manejar JSON
 // Definir el puerto ya no hace falta porque se encarga /bin/www
 //const PORT = 3000;
 // Configurar EJS como el motor de vistas
@@ -16,6 +17,9 @@ app.set('views', path.join(__dirname, 'views')); // Carpeta donde estarán los a
 
 // Middleware para servir archivos estáticos como estilos desde la carpeta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
+
+const loginRouter = require('./routes/login'); // Ajusta la ruta según la ubicación de tu archivo
+app.use('/login', loginRouter);
 
 // Ruta principal que sirve el archivo index.ejs
 app.get('/', (req, res) => {
@@ -41,6 +45,8 @@ app.get('/restricted', (req, res) => {
 
 app.use('/', indexRouter);
 app.use('/users', userRouter);
+
+
 
 function restricted(req, res, next){
   if(req.session.user){

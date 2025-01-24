@@ -1,11 +1,20 @@
 // Ruta para procesar el puntaje enviado
 const express = require('express');
 const router = express.Router();
-const app = express();
 
-app.use(express.json()); // Middleware para procesar JSON
+// Ruta GET para renderizar la vista del juego
+router.get('/', (req, res) => {
+    // Renderiza game.ejs y pasa datos necesarios como usuario y título
+    res.render('game', { 
+        user: req.session.user || { username: 'Invitado' }, 
+        title: 'Snake Game', 
+        message: '¡A jugar!', 
+        player: 'Invitado' || req.session.user.username
+    });
+});
 
-app.post('/game', (req, res) => {
+// Ruta POST para procesar el puntaje enviado
+router.post('/game', (req, res) => {
     const { user, score } = req.body;
 
     // Validar datos
@@ -14,7 +23,7 @@ app.post('/game', (req, res) => {
     }
 
     console.log(`Usuario: ${user}, Puntaje: ${score}`);
-    res.send("Puntaje procesado correctamente.");
+    res.send("Puntaje procesado correctamente."); 
 });
 
 module.exports = router;

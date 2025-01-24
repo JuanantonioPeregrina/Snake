@@ -3,7 +3,7 @@ const database = {};
 database.user = require('./models/user.model');
 
 function initializeUsers(){
-    const NAMES = ["alberto", "ana", "daniel", "silvia"];
+    const NAMES = ["alberto", "ana", "juan", "daniel", "silvia"];
     NAMES.forEach(function(username){
         database.user.register(username, "1234");
     });

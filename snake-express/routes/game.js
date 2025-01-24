@@ -1,10 +1,11 @@
 // Ruta para procesar el puntaje enviado
 const express = require('express');
+const router = express.Router();
 const app = express();
 
 app.use(express.json()); // Middleware para procesar JSON
 
-app.post('/game/score', (req, res) => {
+app.post('/game', (req, res) => {
     const { user, score } = req.body;
 
     // Validar datos
@@ -15,3 +16,5 @@ app.post('/game/score', (req, res) => {
     console.log(`Usuario: ${user}, Puntaje: ${score}`);
     res.send("Puntaje procesado correctamente.");
 });
+
+module.exports = router;

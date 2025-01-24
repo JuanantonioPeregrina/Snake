@@ -1,25 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const { users } = require('../database'); // Asegúrate de importar correctamente tu base de datos
+const database = require('../database');
 
-// Ruta para manejar el login
+router.get('/', function(req, res, next) {
+  res.render('login', {user: req.session.user, title:"Embutidos León"}); //renderiza la view login
+});
+
 router.post('/', async (req, res) => {
-  const { username, password } = req.body;
-
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Faltan credenciales.' });
-  }
-
-  const loginSuccess = await users.isLoginRight(username, password);
-
-  if (loginSuccess) {
-    req.session.user = { username }; // Guarda el usuario en la sesión
-    res.redirect('/restricted'); // Redirige a la página restringida
+ 
+  const user = req.body.user;
+  if(await database.user.isLoginRight(user, req.body.pass)){
+    req.session.user = {username: user};
+    req.session.message = "¡Login correcto!"
+    res.redirect("restricted"); //redirige a la página restricted
   } else {
-    res.render('login', { 
-      title: 'Login',
-      message: 'Usuario o contraseña incorrectos.' 
-    });
+    req.session.error = "Incorrect username or password.";
+    res.redirect("login");
   }
 });
 

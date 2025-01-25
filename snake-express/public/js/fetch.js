@@ -1,8 +1,9 @@
 // Función para enviar el puntaje al servidor
 const enviarPuntaje = async (score) => {
-    const datos = { score: score, user: "Jugador" }; // Cambia "Jugador" según tu lógica
+    const datos = { user: document.getElementById('player-name').textContent, // Obtén el nombre del jugador desde la página
+    score  }; // Cambia "Jugador" según tu lógica
     try {
-      const respuesta = await fetch('/game/score', {
+      const respuesta = await fetch('/game', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datos)

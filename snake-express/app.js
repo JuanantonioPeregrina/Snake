@@ -64,7 +64,7 @@ app.use('/logout', (req,res) =>{
 //Actualizar el nombre de usuario en la vista con el que ha iniciado sesión en vez de hardcodeado Invitado o el mismo nombre para todas las vistas.
 app.use((req, res, next) => {
   res.locals.user = req.session.user || { username: "Invitado" }; // Si no hay usuario, muestra "Invitado"
-  next();
+  next();              //user.username es el nombre del usuario que se logueó
 });
 
 

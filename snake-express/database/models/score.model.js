@@ -1,23 +1,20 @@
-const scores = {};
+const scores = {
+  data: [],
 
-scores.data = []; // Array para almacenar los puntajes
+  registerScore(username, score) {
+      const date = new Date().toISOString();
+      this.data.push({ username, score, date });
 
-// Registrar un nuevo puntaje
-scores.registerScore = function (username, score) {
-  scores.data.push({ username, score, date: new Date() });
+      // Ordenar por puntaje de mayor a menor
+      this.data.sort((a, b) => b.score - a.score);
 
-  // Ordenar los puntajes en orden descendente
-  scores.data.sort((a, b) => b.score - a.score);
+      // Limitar a los 10 mejores puntajes
+      this.data = this.data.slice(0, 10);
+  },
 
-  // Mantener solo los 10 mejores puntajes
-  if (scores.data.length > 10) {
-    scores.data = scores.data.slice(0, 10);
+  getTopScores() {
+      return this.data;
   }
-};
-
-// Obtener los mejores puntajes
-scores.getTopScores = function () {
-  return scores.data;
 };
 
 module.exports = scores;

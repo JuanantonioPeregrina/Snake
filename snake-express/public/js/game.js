@@ -14,7 +14,7 @@ var snake = {
   dx: grid,
   dy: 0,
   cells: [],
-  maxCells: 4
+  maxCells: 10
 };
 
 var apple = {
@@ -66,7 +66,7 @@ const actualizarTabla = async () => {
 function loop() {
   requestAnimationFrame(loop);
 
-  if (++count < 4) {
+  if (++count < 8) { //reduce o + la velocidad del juego
     return;
   }
   count = 0;
@@ -116,10 +116,13 @@ function loop() {
     // Si la serpiente colisiona consigo misma
     for (var i = index + 1; i < snake.cells.length; i++) {
       if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-        enviarPuntaje(score); // Envía el puntaje final al servidor
+        enviarPuntaje(score).then(() => {
+            actualizarTabla(); // Llama a actualizarTabla después de enviar el puntaje
+        });
+    
         score = 0; // Reinicia el marcador
         updateScoreDisplay(score); // Actualiza el marcador en la pantalla
-
+    
         // Reinicia el juego
         snake.x = 160;
         snake.y = 160;
@@ -127,10 +130,11 @@ function loop() {
         snake.maxCells = 4;
         snake.dx = grid;
         snake.dy = 0;
-
+    
         apple.x = getRandomInt(0, 25) * grid;
         apple.y = getRandomInt(0, 25) * grid;
       }
+    
     }
   });
 }
@@ -151,5 +155,7 @@ document.addEventListener('keydown', function (e) {
     snake.dx = 0;
   }
 });
+// Llama a `actualizarTabla` al cargar la página
+actualizarTabla();
 
 requestAnimationFrame(loop);

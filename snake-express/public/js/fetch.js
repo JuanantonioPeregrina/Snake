@@ -1,18 +1,26 @@
-// Función para enviar el puntaje al servidor
 const enviarPuntaje = async (score) => {
-    const datos = { user: document.getElementById('player-name').textContent, // Obtén el nombre del jugador desde la página
-    score  }; // Cambia "Jugador" según tu lógica
-    try {
-      const respuesta = await fetch('/game', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
+  const username = document.getElementById('player-name').textContent;
+  const datos = { username, score };
+
+  try {
+      console.log("Enviando datos al servidor:", datos);
+      const respuesta = await fetch('/game', { // La URL debe coincidir con la ruta en app.js
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(datos),
       });
-      const resultado = await respuesta.text();
-      console.log(resultado); // Respuesta del servidor
-    } catch (error) {
-      console.error("Error al enviar los datos:", error);
-    }
-  };
-  
-  export { enviarPuntaje };
+
+      if (!respuesta.ok) {
+          throw new Error(`Error del servidor: ${respuesta.status} ${respuesta.statusText}`);
+      }
+
+      const topScores = await respuesta.json();
+      console.log("Puntajes recibidos del servidor:", topScores);
+      actualizarTabla(topScores); // Actualizar la tabla en el cliente
+  } catch (error) {
+      console.error("Error al enviar el puntaje:", error);
+  }
+};
+
+export { enviarPuntaje };
+

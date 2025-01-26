@@ -1,4 +1,4 @@
-const express = require('express');
+/*const express = require('express');
 const router = express.Router();
 
 // Importa tu modelo de puntajes
@@ -6,12 +6,12 @@ const scores = require('../database/models/score.model');
 
 // Ruta GET para mostrar la página del juego (solo usuarios registrados)
 router.get('/', (req, res) => {
-    // Validar si el usuario está autenticado
+    //Obligar a que el usuario esté autenticado  
     if (!req.session.user || req.session.user.username === "Invitado") {
         req.session.message = "Debes iniciar sesión para jugar.";
         return res.redirect('/login'); // Redirige al login si no está autenticado
     }
-    
+  
     // Obtener los puntajes y renderizar la página del juego
     const topScores = scores.getTopScores();
     res.render('game', {
@@ -19,6 +19,29 @@ router.get('/', (req, res) => {
         title: "Snake Game",
         message: "¡A jugar!",
         player: req.session.user.username, // Nombre del jugador
+        scores: topScores // Pasar los puntajes a la vista
+    });
+});
+*/
+/*Tanto invitados como registrados acceden*/
+const express = require('express');
+const router = express.Router();
+
+// Importa tu modelo de puntajes
+const scores = require('../database/models/score.model');
+
+// Ruta GET para mostrar la página del juego (permitiendo invitados)
+router.get('/', (req, res) => {
+    // Verifica si el usuario está autenticado o establece un usuario por defecto como "Invitado"
+    const user = req.session.user || { username: "Invitado" };
+
+    // Obtener los puntajes y renderizar la página del juego
+    const topScores = scores.getTopScores();
+    res.render('game', {
+        user, // Información del usuario (autenticado o "Invitado")
+        title: "Snake Game",
+        message: "¡A jugar!",
+        player: user.username, // Nombre del jugador (autenticado o "Invitado")
         scores: topScores // Pasar los puntajes a la vista
     });
 });

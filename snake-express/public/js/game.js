@@ -1,5 +1,15 @@
 // Importar la función enviarPuntaje de fetch.js
 import { enviarPuntaje } from './fetch.js'; // Ajusta la ruta si fetch.js está en otra carpeta
+//import { io } from "socket.io-client"; // Importa el cliente de WebSocket
+//import { io } from "/js/socket.io-client/socket.io.js";
+// Configurar WebSocket
+const socket = io(); // Conecta al servidor de WebSockets
+
+// Escuchar el evento `actualizar-tabla` desde el servidor
+socket.on('actualizar-tabla', (topScores) => {
+    console.log("Puntajes recibidos a través de WebSocket:", topScores);
+    actualizarTabla(topScores); // Llama a la función para actualizar la tabla
+});
 
 var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
@@ -33,7 +43,7 @@ function getRandomInt(min, max) {
 }
 
 // Función para actualizar la tabla de puntajes\
-const actualizarTabla = async () => {
+export const actualizarTabla = async () => {
   try {
     const response = await fetch('/game/scores'); // Llama a la nueva ruta que devuelve los puntajes
     const topScores = await response.json();

@@ -1,3 +1,5 @@
+import { actualizarTabla } from './game.js';
+
 const enviarPuntaje = async (score) => {
   const username = document.getElementById('player-name').textContent;
   const datos = { username, score };

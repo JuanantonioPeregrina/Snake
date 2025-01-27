@@ -4,18 +4,39 @@ const bodyParser = require('body-parser');
 
 const session = require('express-session'); // Si usas sesiones
 
+//Incluimos socket.io con estas dos dependencias para actualización bidireccional
+const http = require('http');
+const socketIo = require('socket.io');
 
 const indexRouter = require('./routes/index');
-const gameRouter = require('./routes/game');
+//const gameRouter = require('./routes/game');
+const gameRouter = require('./routes/game'); //con socket.io
 const loginRouter = require('./routes/login'); // Ajusta la ruta según la ubicación de tu archivo
 const restrictedRouter = require('./routes/restricted');
+
+
 
 // Crear una instancia de Express
 const app = express();
 
+// Crear el servidor HTTP
+const server = http.createServer(app); // Usa tu app Express
+const io = socketIo(server); // Configurar Socket.IO con el servidor
+
+// Escuchar eventos de conexión de los clientes
+io.on('connection', (socket) => {
+    console.log('Nuevo cliente conectado.');
+
+    // Evento para desconexión
+    socket.on('disconnect', () => {
+        console.log('Cliente desconectado.');
+    });
+});
+
+
+
 // Definir el puerto ya no hace falta porque se encarga /bin/www
 //const PORT = 3000;
-
 
 
 // Configurar EJS como el motor de vistas
@@ -48,12 +69,14 @@ app.use((req, res, next) => {
   next(); // Continúa con el siguiente middleware o ruta
 });
 
+//app.use('/js/socket.io-client', express.static(path.join(__dirname, 'node_modules/socket.io-client/dist')));
+
 
 //routes
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
 
-app.use('/game', gameRouter);
+app.use('/game', gameRouter(io));
 app.use('/restricted', restricted, restrictedRouter); //middleware en una funcion aparte
 //Se define sin ninguna ruta(solo en el server)
 app.use('/logout', (req,res) =>{
@@ -76,9 +99,11 @@ function restricted(req, res, next){
     res.redirect("login");
   }
 }
-// Exportar la aplicación
-module.exports = app;
+// Exportar la aplicación sin sockets
+  //module.exports = app;
 
+  // Exporta el servidor en lugar de `app`
+module.exports = { app, server, io };
 // Iniciar el servidor
 /*app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);

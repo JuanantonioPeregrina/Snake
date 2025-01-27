@@ -25,11 +25,14 @@ router.get('/', (req, res) => {
 */
 /*Tanto invitados como registrados acceden*/
 const express = require('express');
-const router = express.Router();
+
 
 // Importa tu modelo de puntajes
 const scores = require('../database/models/score.model');
 
+
+module.exports = (io) => {
+const router = express.Router();
 // Ruta GET para mostrar la página del juego (permitiendo invitados)
 router.get('/', (req, res) => {
     // Verifica si el usuario está autenticado o establece un usuario por defecto como "Invitado"
@@ -48,6 +51,9 @@ router.get('/', (req, res) => {
 
 // Ruta POST para registrar un nuevo puntaje
 
+// Obtén el objeto `socket.io` desde el servidor
+//const { io } = require('../app');
+
 router.post('/', (req, res) => { // NOTA: El endpoint es `/` porque `app.use('/game', gameRouter)` lo antepone
     const { score } = req.body;
     const username = req.session.user ? req.session.user.username : "Invitado";
@@ -63,6 +69,9 @@ router.post('/', (req, res) => { // NOTA: El endpoint es `/` porque `app.use('/g
     const topScores = scores.getTopScores();
     console.log("Puntajes actualizados:", topScores);
 
+    // Emitir el evento para actualizar las tablas en todos los clientes
+    io.emit('actualizar-tabla', topScores);
+
     res.status(200).json(topScores);
 
 });
@@ -74,4 +83,6 @@ router.get('/scores', (req, res) => {
     res.status(200).json(topScores); // Devuelve los puntajes al cliente
 });
 
-module.exports = router;
+return router; // Asegúrate de devolver el Router
+}
+//module.exports = router;

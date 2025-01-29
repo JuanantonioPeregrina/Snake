@@ -34,14 +34,14 @@
         </form>
 
         <div class="text-end">
-          <% if (user) { %>
-
+          <% if (!user || user.username === "Invitado") { %>
+            <a href="/login" class="btn btn-outline-light me-2">Login</a>
+            <a href="/signup" class="btn btn-warning">Sign-up</a>
           <% } else { %>
-          <a href="/login" class="btn btn-outline-light me-2">Login</button>
-          <a href="/signup" class="btn btn-warning">Sign-up</a>
+            <a href="/logout" class="btn btn-warning">Logout</a>
           <% } %>
-          
         </div>
+        
         
     </div>
   </header>

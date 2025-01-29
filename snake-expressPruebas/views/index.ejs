@@ -2,9 +2,14 @@
 <html lang="en">
 <%- include("partials/header", {}) -%>
 
+
 <body>
   <h1><%= message %></h1>
+ 
+  <!--  Con res.locals ahora, ya no necesitas pasar manualmente message y user
   <p>Jugador: <%= user ? user.username : "Invitado" %></p><br>
+-->
+  <p>Jugador: <%= user.username %></p><br>
   <p>Si quiere disfrutar de la experiencia acceda en el menú a la sección <span style= "color:blue"> games.</span></p>
   <br> 
   <p>Actualmente, no está activo el registro, tan solo se permite el login con una serie de usuarios contemplados.</p>

@@ -1,0 +1,51 @@
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="module" src="/js/game.js"></script>
+<!-- Canvas para el juego -->
+<canvas id="game" width="400" height="400"></canvas>
+
+<%- include("partials/header", {}) -%>
+
+<body>
+  <h1><%= message %></h1>
+  <p>Jugador: <span id="player-name"><%= user ? user.username : "Invitado" %></span></p><br>
+  <p>Si quiere disfrutar de la experiencia acceda en el menú a la sección games.</p>
+
+  <!-- Mostrar el puntaje dinámicamente -->
+  <h2>Puntaje actual: <span id="live-score">0</span></h2>
+
+  <!-- Tabla de puntajes dinámica -->
+  <h2>Puntajes</h2>
+  <table border="1" style="margin-top: 20px; width: 50%; text-align: center;">
+    <thead>
+      <tr>
+        <th>Posición</th>
+        <th>Jugador</th>
+        <th>Puntaje</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (scores && scores.length > 0) { %>
+        <% scores.forEach((score, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= score.username %></td>
+            <td><%= score.score %></td>
+            <td><%= new Date(score.date).toLocaleString() %></td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr>
+          <td colspan="4">No hay puntajes disponibles aún.</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  
+
+  <!-- Archivo JavaScript del juego -->
+
+
+  <%- include("partials/footer", {}) -%>
+</body>

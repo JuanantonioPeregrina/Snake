@@ -25,6 +25,11 @@
     "date": "2025-01-26T23:51:56.368Z"
   },
   {
+    "username": "Invitado",
+    "score": 4,
+    "date": "2025-01-28T23:34:46.905Z"
+  },
+  {
     "username": "ana",
     "score": 3,
     "date": "2025-01-26T22:44:05.545Z"
@@ -43,10 +48,5 @@
     "username": "Invitado",
     "score": 3,
     "date": "2025-01-27T00:00:29.648Z"
-  },
-  {
-    "username": "Invitado",
-    "score": 2,
-    "date": "2025-01-26T23:46:17.926Z"
   }
 ]
